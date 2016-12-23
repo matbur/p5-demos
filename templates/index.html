@@ -1,0 +1,8 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <ul>
+        <li><a href="{{ url_for('get_demo', demo='demo1.html') }}">demo1</a></li>
+        <li><a href="{{ url_for('get_demo', demo='demo2.html') }}">demo2</a></li>
+    </ul>
+{% endblock %}
