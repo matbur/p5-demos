@@ -8,12 +8,14 @@
     {% block title %}
         <title>p5-demos</title>
     {% endblock %}
-    {#    <script language="javascript" type="text/javascript"#}
-    {#            src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.5/p5.min.js"></script>#}
-    <script language="javascript" type="text/javascript"
-            src="{{ url_for('static', filename='libs/p5.min.js') }}"></script>
-    <script language="javascript" type="text/javascript"
-            src="{{ url_for('static', filename='libs/p5.dom.min.js') }}"></script>
+        <script language="javascript" type="text/javascript"
+                src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.5/p5.min.js"></script>
+        <script language="javascript" type="text/javascript"
+                src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.5/p5.min.js"></script>
+{#    <script language="javascript" type="text/javascript"#}
+{#            src="{{ url_for('static', filename='libs/p5.min.js') }}"></script>#}
+{#    <script language="javascript" type="text/javascript"#}
+{#            src="{{ url_for('static', filename='libs/p5.dom.min.js') }}"></script>#}
     <style>
         body {
             padding: 0;

@@ -62,7 +62,7 @@ function sliderMoved() {
         lines.splice(value);
     } else {
         for (let i = n; i < value; i++) {
-            lines.push(new Line(lines[i - 1], (i % 2) * PI));
+            lines.push(new Line(lines[i - 1], random(PI)));
         }
     }
     n = value;
@@ -75,7 +75,7 @@ function buttonClicked() {
 
     lines[0] = {x2: width / 2, y2: height / 2};
     for (let i = 1; i < n; i++) {
-        lines[i] = new Line(lines[i - 1], (i - 1 % 2) * PI);
+        lines[i] = new Line(lines[i - 1], random(PI));
     }
     background(0);
     redraw();
