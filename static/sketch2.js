@@ -22,11 +22,12 @@ function setup() {
     slider.input(sliderMoved);
     span = createSpan();
 
-    modeBox = createCheckbox('mode', true);
+    modeBox = createCheckbox('lines', true);
     cleanBox = createCheckbox('clean', false);
 
-    for (let i = 50; i < 150; i++) {
-        let ang = HALF_PI / i;
+    let PI100 = PI / 400.;
+    for (let i = 1; i < 10; i++) {
+        let ang = PI100 * i;
         angles.push(ang);
         angles.push(-ang);
     }
@@ -75,7 +76,7 @@ function buttonClicked() {
 
     lines[0] = {x2: width / 2, y2: height / 2};
     for (let i = 1; i < n; i++) {
-        lines[i] = new Line(lines[i - 1], random(PI));
+        lines[i] = new Line(lines[i - 1], (i % 2) * PI);
     }
     background(0);
     redraw();
