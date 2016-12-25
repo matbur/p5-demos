@@ -2,7 +2,8 @@
 
 {% block content %}
     <ul>
-        <li><a href="{{ url_for('get_demo', demo='demo1.html') }}">demo1</a></li>
-        <li><a href="{{ url_for('get_demo', demo='demo2.html') }}">demo2</a></li>
+        {% for i in range(3) %}
+            <li><a href="{{ url_for('get_demo', demo=i+1) }}">demo{{ i+1 }}</a></li>
+        {% endfor %}
     </ul>
 {% endblock %}

@@ -1,6 +1,7 @@
-let canvas, button, slider, span, modeBox, cleanBox;
+let canvas, button, slider, span, modeBox, cleanBox, autoSaveBox, saveButton, autoRunBox, status;
 
-const d = 50;
+const divN = 800;
+const angleN = divN / 80;
 
 let n = 3;
 let lines = [];
@@ -10,33 +11,58 @@ let isLoop = true;
 let angles = [];
 
 function setup() {
-    canvas = createCanvas(windowWidth - 2 * d, windowHeight - 2 * d);
-    canvas.position(d, d);
+    let size = min(windowWidth, windowHeight);
+    canvas = createCanvas(size, size);
+    let posX = (windowWidth - width) / 2;
+    let posY = (windowHeight - height) / 2;
+    canvas.position(posX, posY);
     canvas.style('border-radius', '100px');
     canvas.mouseClicked(canvasClicked);
 
     button = createButton('Start over');
     button.mouseClicked(buttonClicked);
 
-    slider = createSlider(2, 101, n);
+    slider = createSlider(2, 11, n);
     slider.input(sliderMoved);
     span = createSpan();
 
     modeBox = createCheckbox('lines', true);
     cleanBox = createCheckbox('clean', false);
+    autoRunBox = createCheckbox('autorun', false);
+    autoSaveBox = createCheckbox('autosave', false);
 
-    let PI100 = PI / 400.;
-    for (let i = 1; i < 10; i++) {
-        let ang = PI100 * i;
+    saveButton = createButton('save');
+    saveButton.mouseClicked(saveMyCanvas);
+
+    status = createP();
+
+    const divPI = TWO_PI / divN;
+    for (let i = 1; i < angleN; i++) {
+        let ang = divPI * i;
         angles.push(ang);
         angles.push(-ang);
     }
+    angles.sort();
 
     sliderMoved();
     buttonClicked();
 }
 
+let c = 0;
 function draw() {
+    c++;
+    status.html(round(map(c / divN, 0, 1, 0, 100)) + '%');
+
+    if (c === divN) {
+        noLoop();
+        if (autoSaveBox.checked()) {
+            saveMyCanvas();
+        }
+        if (autoRunBox.checked()) {
+            buttonClicked();
+        }
+    }
+
     if (cleanBox.checked()) {
         background(0);
     }
@@ -45,6 +71,14 @@ function draw() {
         lines[i].update();
         lines[i].draw(mode);
     }
+}
+
+function saveMyCanvas() {
+    let name = n - 1 + '';
+    for (let i = 1; i < n; i++) {
+        name += '_' + lines[i].angleIndex;
+    }
+    saveCanvas(name);
 }
 
 function canvasClicked() {
@@ -70,6 +104,7 @@ function sliderMoved() {
 }
 
 function buttonClicked() {
+    c = 0;
     n = slider.value();
     mode = modeBox.checked();
     lines = [];
@@ -79,7 +114,7 @@ function buttonClicked() {
         lines[i] = new Line(lines[i - 1], (i % 2) * PI);
     }
     background(0);
-    redraw();
+    loop();
 }
 
 
@@ -87,7 +122,9 @@ function Line(previous, angle, radius, col, delta) {
     this.previous = previous;
     this.radius = radius || random(50, 100);
     this.col = col || color(random(255), random(255), random(255));
-    this.delta = delta || angles[floor(random(angles.length))];
+    this.angleIndex = floor(random(angles.length));
+    this.delta = delta || angles[this.angleIndex];
+    console.log(this.delta, this.angleIndex);
 
     this.x1 = 0;
     this.y1 = 0;
@@ -120,8 +157,3 @@ function Line(previous, angle, radius, col, delta) {
         this.y2 = this.y1 + this.radius * sin(this.angle);
     };
 }
-
-
-// function windowResized() {
-//     resizeCanvas(windowWidth, windowHeight);
-// }
